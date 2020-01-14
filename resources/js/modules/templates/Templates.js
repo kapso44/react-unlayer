@@ -1,8 +1,7 @@
 import moment from 'moment'
 import Model from '../../utils/Model'
-import User from '../user/User'
 
-class Article extends Model {
+class Templates extends Model {
   constructor(props) {
     super(props)
     
@@ -20,8 +19,7 @@ class Article extends Model {
     this.publishedAt = props.publishedAt ? moment(props.publishedAt) : null
 
     // relate user model
-    this.user = props.user ? new User(props.user) : null
   }
 }
 
-export default Article
+export default Templates

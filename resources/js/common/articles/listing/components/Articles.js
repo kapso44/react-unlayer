@@ -18,6 +18,7 @@ class Articles extends Component {
   }
   
   renderArticles() {
+    
     return this.props.articles.map((article, index) => {
       return <Article key={`article-${index}`}
                       index={index}

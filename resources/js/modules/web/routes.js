@@ -16,17 +16,7 @@ const routes = [
     path: '/blog/:slug',
     exact: true,
     component: lazy(() => import('./pages/blog/details/index')),
-  },
-  {
-    path: '/templates',
-    exact: true,
-    component: lazy(() => import('./templates/list/index')),
-  },
-  {
-    path: '/templates-editor',
-    exact: true,
-    component: lazy(() => import('./templates/editor/index')),
-  },
+  }
 ]
 
 export default routes

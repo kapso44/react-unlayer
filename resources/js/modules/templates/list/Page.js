@@ -2,23 +2,25 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { articleListRequest, articleUpdateRequest, articleRemoveRequest } from '../../service'
+import { templateListRequest, templateUpdateRequest, templateRemoveRequest } from '../service'
 
 // import components
-import ArticleRow from './components/ArticleRow'
+import ArticleRow from '../../article/pages/list/components/ArticleRow'
+import TemplateRow from './components/TemplateRow'
 import Pagination from './components/Pagination'
 import { Link } from 'react-router-dom'
 
 class Page extends Component {
   static displayName = 'ArticlesPage'
   static propTypes = {
-    meta: PropTypes.object.isRequired,
-    articles: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired,
+    meta: PropTypes.object,
+    articles: PropTypes.array,
+    dispatch: PropTypes.func,
   }
   
   constructor(props) {
     super(props)
+    console.log('test');
     console.log(this);
     this.togglePublish = this.togglePublish.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
@@ -27,48 +29,46 @@ class Page extends Component {
   
   UNSAFE_componentWillMount() {
     const { dispatch } = this.props
-    
-    dispatch(articleListRequest({}))
+    dispatch(templateListRequest({}))
   }
   
   pageChange(pageNumber) {
-    this.props.dispatch(articleListRequest({ pageNumber }))
+    this.props.dispatch(templateListRequest({ pageNumber }))
   }
   
   togglePublish(id) {
+    const template = this.props.articles.find(article => (article.id === id))
     
-    const article = this.props.articles.find(article => (article.id === id))
-
-    if (!article)
+    if (!template)
       return
   
-    article.published = !article.published
-    if (article.published) {
-      article.publishedAt = moment()
+    template.published = !template.published
+    if (template.published) {
+      template.publishedAt = moment()
     } else {
-      article.publishedAt = null
+      template.publishedAt = null
     }
     
-    this.props.dispatch(articleUpdateRequest(article.toJson()))
+    this.props.dispatch(templateUpdateRequest(template.toJson()))
   }
   
   handleRemove(id) {
-    this.props.dispatch(articleRemoveRequest(id))
+    this.props.dispatch(templateRemoveRequest(id))
   }
   
-  renderArticles() {
+  renderTemplates() {
     return this.props.articles.map((article, index) => {
       return <ArticleRow key={index}
-                        article={article}
-                        index={index}
-                        togglePublish={this.togglePublish}
-                        handleRemove={this.handleRemove}/>
+                         article={article}
+                         index={index}
+                         togglePublish={this.togglePublish}
+                         handleRemove={this.handleRemove}/>
     })
   }
   
   render() {
     return <main className="col-sm-9 m-sm-auto col-md-12 pt-3" role="main">
-      <h1>Articles</h1>
+      <h1>templates</h1>
       <table className="table table-responsive table-striped">
         <thead className="thead-inverse">
         <tr>
@@ -82,7 +82,7 @@ class Page extends Component {
         </tr>
         </thead>
         <tbody>
-        { this.renderArticles() }
+        { this.renderTemplates() }
         </tbody>
       </table>
       <Pagination meta={this.props.meta} onChange={this.pageChange}/>

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Article;
+use App\Templates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\TemplateRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ArticleController extends Controller
@@ -22,7 +22,7 @@ class ArticleController extends Controller
         // if ($request->user()->is_admin) {
         //     return Article::loadAll();
         // }
-        return Article::loadAllMine(52);
+        return Templates::loadAllMine(52);
     }
 
     /**
@@ -32,7 +32,7 @@ class ArticleController extends Controller
      */
     public function publishedArticles()
     {
-        return Article::loadAllPublished();
+        return Templates::loadAllPublished();
     }
 
     /**
@@ -43,7 +43,7 @@ class ArticleController extends Controller
      */
     public function publishedArticle($slug)
     {
-        return Article::loadPublished($slug);
+        return Templates::loadPublished($slug);
     }
 
     /**
@@ -59,36 +59,36 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ArticleRequest $request
+     * @param TemplateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleRequest $request)
+    public function store(TemplateRequest $request)
     {
         $user = $request->user();
 
-        $article = new Article($request->validated());
-        $article->slug = Str::slug($request->get('title'));
+        $template = new Templates($request->validated());
+        $template->slug = Str::slug($request->get('title'));
 
-        $user->articles()->save($article);
+        $user->articles()->save($template);
 
-        return response()->json($article, 201);
+        return response()->json($template, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $id)
-    {
-        if (!$request->user()->is_admin) {
-            return Article::mine($request->user()->id)->findOrFail($id);
-        }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param \Illuminate\Http\Request $request
+    //  * @param int $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show(Request $request, $id)
+    // {
+    //     if (!$request->user()->is_admin) {
+    //         return Templates::mine($request->user()->id)->findOrFail($id);
+    //     }
 
-        return Article::findOrFail($id);
-    }
+    //     return Temp::findOrFail($id);
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -104,19 +104,19 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param ArticleRequest $request
+     * @param TemplateRequest $request
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, $id)
+    public function update(TemplateRequest $request, $id)
     {
-        $article = Article::findOrFail($id);
+        $template = Templates::findOrFail($id);
 
         $data = $request->validated();
         $data['slug'] = Str::slug($data['title']);
-        $article->update($data);
+        $template->update($data);
 
-        return response()->json($article, 200);
+        return response()->json($template, 200);
     }
 
     /**
@@ -127,9 +127,9 @@ class ArticleController extends Controller
      */
     public function delete($id)
     {
-        $article = Article::findOrFail($id);
+        $template = Templates::findOrFail($id);
 
-        $article->delete();
+        $template->delete();
 
         return response([], 200);
     }
