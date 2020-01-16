@@ -8,6 +8,11 @@ const routes = [
     component: lazy(() => import('./list/index')),
   },
   {
+    path: '/templates/create',
+    exact: true,
+    component: lazy(() => import('./add/index')),
+  },
+  {
     path: '/templates-editor',
     exact: true,
     component: lazy(() => import('./editor/index')),

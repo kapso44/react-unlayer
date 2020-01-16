@@ -13,7 +13,7 @@ function transformResponse(params) {
 export function templateAddRequest(params) {
   return dispatch => (
     new Promise((resolve, reject) => {
-      Http.post('/articles', transformRequest(params))
+      Http.post('/templates', transformRequest(params))
         .then(res => {
           dispatch(templateActions.add(transformResponse(res.data)))
           return resolve()
@@ -45,7 +45,7 @@ export function templateAddRequest(params) {
 export function templateUpdateRequest(params) {
   return dispatch => (
     new Promise((resolve, reject) => {
-      Http.patch(`articles/${params.id}`, transformRequest(params))
+      Http.patch(`templates/${params.id}`, transformRequest(params))
         .then(res => {
           dispatch(templateActions.add(transformResponse(res.data)))
           return resolve()
@@ -76,7 +76,7 @@ export function templateUpdateRequest(params) {
 
 export function templateRemoveRequest(id) {
   return dispatch => {
-    Http.delete(`articles/${id}`)
+    Http.delete(`templates/${id}`)
       .then(() => {
         dispatch(templateActions.remove(id))
       })
@@ -87,7 +87,7 @@ export function templateRemoveRequest(id) {
   }
 }
 
-export function templateListRequest({pageNumber = 1, url = '/articles'}) {
+export function templateListRequest({pageNumber = 1, url = '/templates'}) {
   return dispatch => {
     if (pageNumber > 1) {
       url = url + `?page=${pageNumber}`
@@ -105,7 +105,7 @@ export function templateListRequest({pageNumber = 1, url = '/articles'}) {
 
 export function templateEditRequest(id) {
   return dispatch => {
-    Http.get(`articles/${id}`)
+    Http.get(`templates/${id}`)
       .then((res) => {
         dispatch(templateActions.add(transformResponse(res.data)))
       })
@@ -118,7 +118,7 @@ export function templateEditRequest(id) {
 
 export function templateFetchRequest(slug) {
   return dispatch => {
-    Http.get(`articles/published/${slug}`)
+    Http.get(`templates/published/${slug}`)
       .then((res) => {
         dispatch(templateActions.add(transformResponse(res.data)))
       })

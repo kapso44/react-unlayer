@@ -68,8 +68,9 @@ class ArticleController extends Controller
 
         $article = new Article($request->validated());
         $article->slug = Str::slug($request->get('title'));
+        $article->user_id=52;
 
-        $user->articles()->save($article);
+        $article->save();
 
         return response()->json($article, 201);
     }

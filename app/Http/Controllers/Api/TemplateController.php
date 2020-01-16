@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TemplateRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class ArticleController extends Controller
+class TemplateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class ArticleController extends Controller
         // if ($request->user()->is_admin) {
         //     return Article::loadAll();
         // }
-        return Templates::loadAllMine(52);
+        return Templates::loadAll();
     }
 
     /**
@@ -30,7 +30,7 @@ class ArticleController extends Controller
      *
      * @return mixed
      */
-    public function publishedArticles()
+    public function publishedTemplates()
     {
         return Templates::loadAllPublished();
     }
@@ -41,7 +41,7 @@ class ArticleController extends Controller
      * @param $slug
      * @return mixed
      */
-    public function publishedArticle($slug)
+    public function publishedTemplate($slug)
     {
         return Templates::loadPublished($slug);
     }
@@ -67,28 +67,27 @@ class ArticleController extends Controller
         $user = $request->user();
 
         $template = new Templates($request->validated());
-        $template->slug = Str::slug($request->get('title'));
 
-        $user->articles()->save($template);
+        $template->save();
 
         return response()->json($template, 201);
     }
 
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param \Illuminate\Http\Request $request
-    //  * @param int $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show(Request $request, $id)
-    // {
-    //     if (!$request->user()->is_admin) {
-    //         return Templates::mine($request->user()->id)->findOrFail($id);
-    //     }
+    /**
+     * Display the specified resource.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Request $request, $id)
+    {
+        // if (!$request->user()->is_admin) {
+        //     return Templates::mine($request->user()->id)->findOrFail($id);
+        // }
 
-    //     return Temp::findOrFail($id);
-    // }
+        return Templates::findOrFail($id);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -113,7 +112,6 @@ class ArticleController extends Controller
         $template = Templates::findOrFail($id);
 
         $data = $request->validated();
-        $data['slug'] = Str::slug($data['title']);
         $template->update($data);
 
         return response()->json($template, 200);

@@ -6,10 +6,10 @@ import Templates from '../Templates'
 import Page from './Page'
 
 const mapStateToProps = state => {
-  const {data, ...meta} = state.articles
+  const {data, ...meta} = state.templates
   
   return {
-    articles: data.map((article) => new Templates(article)),
+    templates: data.map((templates) => new Templates(templates)),
     meta: Object.assign({}, meta)
   }
 }

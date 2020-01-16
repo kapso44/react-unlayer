@@ -20,6 +20,8 @@ import Routes from './routes'
 
 import { authCheck } from './modules/auth/store/actions'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 store.dispatch(authCheck())
 
 render((<Provider store={store}>

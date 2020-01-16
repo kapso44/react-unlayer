@@ -11,12 +11,10 @@ class Templates extends Model {
   initialize(props) {
     super.initialize(props)
 
-    this.slug = props.slug || ''
-    this.title = props.title || ''
-    this.description = props.description || ''
+    this.title = props.name || ''
     this.content = props.content || ''
-    this.published = props.published || false
-    this.publishedAt = props.publishedAt ? moment(props.publishedAt) : null
+    // this.published = props.createdAt || false
+    this.publishedAt = props.createdAt ? moment(props.createdAt) : null
 
     // relate user model
   }

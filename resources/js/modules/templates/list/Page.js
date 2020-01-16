@@ -5,23 +5,21 @@ import moment from 'moment'
 import { templateListRequest, templateUpdateRequest, templateRemoveRequest } from '../service'
 
 // import components
-import ArticleRow from '../../article/pages/list/components/ArticleRow'
+// import ArticleRow from '../../article/pages/list/components/ArticleRow'
 import TemplateRow from './components/TemplateRow'
 import Pagination from './components/Pagination'
 import { Link } from 'react-router-dom'
 
 class Page extends Component {
-  static displayName = 'ArticlesPage'
+  static displayName = 'TemplatesPage'
   static propTypes = {
-    meta: PropTypes.object,
-    articles: PropTypes.array,
+    meta: PropTypes.object.isRequired,
+    templates: PropTypes.array.isRequired,
     dispatch: PropTypes.func,
   }
   
   constructor(props) {
     super(props)
-    console.log('test');
-    console.log(this);
     this.togglePublish = this.togglePublish.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
     this.pageChange = this.pageChange.bind(this)
@@ -37,7 +35,7 @@ class Page extends Component {
   }
   
   togglePublish(id) {
-    const template = this.props.articles.find(article => (article.id === id))
+    const template = this.props.templates.find(templates => (templates.id === id))
     
     if (!template)
       return
@@ -57,28 +55,26 @@ class Page extends Component {
   }
   
   renderTemplates() {
-    return this.props.articles.map((article, index) => {
-      return <ArticleRow key={index}
-                         article={article}
-                         index={index}
-                         togglePublish={this.togglePublish}
-                         handleRemove={this.handleRemove}/>
+    return this.props.templates.map((templates, index) => {
+      return <TemplateRow key={index}
+                template={templates}
+                index={index}
+                togglePublish={this.togglePublish}
+                handleRemove={this.handleRemove}/>
     })
   }
   
   render() {
     return <main className="col-sm-9 m-sm-auto col-md-12 pt-3" role="main">
-      <h1>templates</h1>
+      <h1>Templates</h1>
       <table className="table table-responsive table-striped">
         <thead className="thead-inverse">
         <tr>
           <th>#</th>
           <th>Title</th>
           <th>Description</th>
-          <th>Created At</th>
-          <th>Updated At</th>
           <th>Published At</th>
-          <th><Link to='/articles/create' className="btn btn-success">Add</Link></th>
+          <th><Link to='/templates/create' className="btn btn-success">Add</Link></th>
         </tr>
         </thead>
         <tbody>
