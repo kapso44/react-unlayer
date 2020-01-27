@@ -20,7 +20,7 @@ class Templates extends Model
      */
     protected $table = 'email_templates';
 
-    protected $fillable = ['id', 'name', 'content'];
+    protected $fillable = ['id', 'name', 'content', 'template', 'description'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -28,7 +28,7 @@ class Templates extends Model
      * @var array
      */
     protected $dates = ['deleted_at', 'created_at'];
-    
+
     /**
      * Load all for admin and paginate
      *
@@ -37,7 +37,7 @@ class Templates extends Model
     public static function loadAll(): Paginator
     {
         return static::latest()
-            ->paginate();
+            ->paginate(10);
     }
 
     /**

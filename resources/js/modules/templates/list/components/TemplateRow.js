@@ -13,18 +13,14 @@ const propTypes = {
 const TemplateRow = ({ index, template, togglePublish, handleRemove }) => {
   return (<tr key={index}>
     <th scope="row">{index+1}</th>
-    <td>{template.title}</td>
-    <td>{template.content}</td>
+    <td>{template.name}</td>
+    <td>{template.description}</td>
     <td>{template.publishedAt && template.publishedAt.format('MMMM, DD YYYY')}</td>
     <td>
       <div className="btn-group" role="group" aria-label="Actions">
-        {
-          template.published
-          ? <button className="btn btn-warning" onClick={() => togglePublish(template.id)}>Un Published</button>
-          : <button className="btn btn-success" onClick={() => togglePublish(template.id)}>Publish</button>
-        }
-        <Link className="btn btn-primary" to={`articles/${template.id}/edit`}>Edit</Link>
-        <button className="btn btn-danger" onClick={() => handleRemove(template.id)}>Delete</button>
+        <Link className="btn btn-success mr-2" to={`templates/${template.id}/editor`}>Add/Edit Template</Link>
+        <Link className="btn btn-primary mr-2" to={`template/${template.id}/edit`}>Edit</Link>
+        <button className="btn btn-danger mr-2" onClick={() => handleRemove(template.id)}>Delete</button>
       </div>
     </td>
   </tr>)

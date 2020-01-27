@@ -1,11 +1,13 @@
 import React, { Component } from "react"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from "prop-types"
 import styled, { createGlobalStyle } from 'styled-components'
+import { contentUpdateRequest, templateEditRequest } from '../service'
 
 // import components
 import Header from "../../web/pages/home/components/Header"
 import Example from '../src'
-import sample from './sample.json'
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -63,6 +65,100 @@ class Page extends Component {
   static displayName = "Template Editor"
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    template: PropTypes.object,
+    match: PropTypes.object.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+  }
+
+  UNSAFE_componentWillMount() {
+    const {match, dispatch } = this.props
+    dispatch(templateEditRequest(match.params.id))
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const template = nextProps.template.toJson()
+    this.setState({ template })
+  }
+
+  loadTemplate() {
+    const { match, template, dispatch } = this.props
+    
+    if (!template.id) {
+      dispatch(templateEditRequest(match.params.id))
+    }
+  }
+
+  handleChange(name, value) {
+    const { errors } = this.validator
+    
+    this.setState({ template: { ...this.state.template, [name]: value} })
+    console.log()
+    errors.remove(name)
+    
+    this.validator.validate(name, value)
+      .then(() => {
+        this.setState({ errors })
+      })
+  }
+
+  addTemplate(addData = '') {
+    var template = this.props.template;
+    
+    this.editor.exportHtml(data => {
+      const { design, html } = data
+      template.template = addData === '' ? design : Object.assign(design, addData)
+      template.content = html
+      this.props.dispatch(contentUpdateRequest(template))
+      .catch(({ error, statusCode }) => {
+        const { errors } = this.validator
+        if (statusCode === 422) {
+          _.forOwn(error, (message, field) => {
+            errors.add(field, message);
+          });
+        }
+        this.setState({ errors })
+      })
+    })
+
+    
+  }
+
+  onLoad = () => {
+    // this.editor.addEventListener('onDesignLoad', this.onDesignLoad)
+    unlayer.addEventListener('design:updated', function(data) {
+      // Design is updated by the user
+      // var type = data.type; // body, row, content
+      // var item = data.item;
+      var changes = data.changes;
+      // console.log('design:updated', type, item, changes);
+      this.addTemplate(changes);
+    }.bind(this))
+    
+    var templateJson = this.props.template.template ? JSON.parse(this.props.template.template) : ''
+    this.editor.loadDesign(templateJson)
+  }
+
+  saveDesign = () => {
+    this.addTemplate();
+    toast.success("Saved Successfully", {
+      autoClose: 5000,
+      hideProgressBar: false,
+    })
+  }
+
+  exportHtml = () => {
+    this.editor.exportHtml(data => {
+      const { design, html } = data
+      console.log('exportHtml', html)
+      alert("Output HTML has been logged in your developer console.")
+    })
+  }
+
+  onDesignLoad = (data) => {
+    // console.log('onDesignLoad', data)
   }
 
   render() {
@@ -71,10 +167,10 @@ class Page extends Component {
       <GlobalStyle />
       <Container>
           <Bar>
-            <h1>Email Template Editor</h1>
+          <h1>Email Template Editor - {this.props.template.name}</h1>
 
             <button onClick={this.saveDesign}>Save Design</button>
-            <button onClick={this.exportHtml}>Export HTML</button>
+            <button onClick={this.notify}>Export HTML</button>
           </Bar>
 
           <Example
@@ -90,31 +186,9 @@ class Page extends Component {
         /> */}
 
       </Container>
+      <ToastContainer/>
     </div>
-  }
-  onLoad = () => {
-    // this.editor.addEventListener('onDesignLoad', this.onDesignLoad)
-    this.editor.loadDesign(sample)
-  }
-
-  saveDesign = () => {
-    this.editor.saveDesign(design => {
-      console.log('saveDesign', design)
-      alert("Design JSON has been logged in your developer console.")
-    })
-  }
-
-  exportHtml = () => {
-    this.editor.exportHtml(data => {
-      const { design, html } = data
-      console.log('exportHtml', html)
-      alert("Output HTML has been logged in your developer console.")
-    })
-  }
-
-  onDesignLoad = (data) => {
-    console.log('onDesignLoad', data)
   }
 }
 
-export default Page
+export default (Page);

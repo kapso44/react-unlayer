@@ -6,8 +6,6 @@ import styled, { createGlobalStyle } from 'styled-components'
 
 // import components
 import Header from "../../../web/pages/home/components/Header"
-import Example from '../../src'
-import sample from '../sample.json'
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -28,50 +26,15 @@ const Container = styled.div`
   position: relative;
   height: 100%;
 `
-
-const Bar = styled.div`
-  flex: 1;
-  background-color: #61dafb;
-  color: #000;
-  padding: 10px;
-  display: flex;
-  max-height: 60px;
-
-  h1 {
-    flex: 1;
-    font-size: 2rem;
-    text-align: left;
-    font-weight: 500;
-    line-height: 1.2;
-    color: white;
-    margin-bottom: 0.5rem
-  }
-
-  button {
-    flex: 1;
-    padding: 10px;
-    margin-left: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    background-color: #000;
-    color: #FFF;
-    border: 0px;
-    max-width: 150px;
-    cursor: pointer;
-  }
-`
 const displayName = 'TemplateFrom'
 const propTypes = {
   template: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onLoad: PropTypes.func,
-  saveDesign: PropTypes.func,
-  onDesignLoad: PropTypes.func
 }
 
-const Form = ({ template, errors, onChange, onSubmit, onLoad, saveDesign, onDesignLoad }) => {
+const Form = ({ template, errors, onChange, onSubmit }) => {
   
   function handleChange(name, value) {
     if (value !== template[name]) {
@@ -83,16 +46,7 @@ const Form = ({ template, errors, onChange, onSubmit, onLoad, saveDesign, onDesi
       <Header/>
       <GlobalStyle />
       <Container>
-        <Bar>
-          <button onClick={e => saveDesign(e)}>Save Design</button>
-        </Bar>  
-          {/* <button onClick={exportHtml()}>Export HTML</button> */}
           <form onSubmit={e => onSubmit(e)}>
-            <Example
-              ref={editor => template.editor = editor}
-              onLoad={e => onLoad(sample)}
-              onDesignLoad={e => onDesignLoad(e)}
-            />
             <div className="form-group row">
               <label htmlFor="name" className="col-sm-2 col-form-label">Title</label>
               <div className="col-sm-10">
@@ -107,10 +61,10 @@ const Form = ({ template, errors, onChange, onSubmit, onLoad, saveDesign, onDesi
               </div>
             </div>
             <div className="form-group row">
-                <label htmlFor="content" className="col-sm-2 col-form-label">Content</label>
+                <label htmlFor="description" className="col-sm-2 col-form-label">Description</label>
                 <div className="col-sm-10">
-                  <MyEditor id="content" value={template.content} onChange={e => handleChange('content', e)} />
-                  {errors.has('content') && <div className="invalid-feedback">{errors.first('content')}</div>}
+                  <MyEditor id="description" value={template.description} onChange={e => handleChange('description', e)} />
+                  {errors.has('description') && <div className="invalid-feedback">{errors.first('description')}</div>}
                 </div>
               </div>
               <div className="form-group row">

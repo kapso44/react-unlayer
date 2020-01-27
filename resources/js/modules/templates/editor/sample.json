@@ -79,7 +79,7 @@
                     "color": "#000",
                     "textAlign": "center",
                     "lineHeight": "120%",
-                    "text": "<div><span style=\"color: #6fbb7b; font-family: Pacifico, cursive; font-size: 58px; text-align: center; line-height: 69.6px;\">&nbsp;Your Summer Break</span></div>"
+                    "text": "<div><span style=\"color: #6fbb7b; font-family: Pacifico, cursive; font-size: 58px; text-align: center; line-height: 69.6px;\">&nbsp;[[business_name]]</span></div>"
                   }
                 },
                 {

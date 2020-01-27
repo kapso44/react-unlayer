@@ -65,7 +65,7 @@ class Page extends Component {
   }
   
   render() {
-    return <main className="col-sm-9 m-sm-auto col-md-12 pt-3" role="main">
+    return <main className="col-sm-12 m-sm-auto col-md-12 pt-3" role="main">
       <h1>Templates</h1>
       <table className="table table-responsive table-striped">
         <thead className="thead-inverse">

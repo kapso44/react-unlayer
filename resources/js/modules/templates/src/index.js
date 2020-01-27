@@ -11,7 +11,7 @@ export default class extends Component {
     } = this
 
     return (
-      <div style={{
+      <div className="col-sm-12 col-md-12" style={{
         flex: 1,
         display: 'flex',
         minHeight: minHeight,
@@ -51,7 +51,9 @@ export default class extends Component {
     unlayer.init({
       ...options,
       id: 'editor',
-      projectId: 3758,
+      projectId: 3794,
+      // projectId: 3758,
+      // projectId: 3812,
       displayMode: 'email',
       appearance: {
         theme: 'light',
@@ -60,8 +62,23 @@ export default class extends Component {
             dock: 'left'
           }
         }
-      }
+      },
+      designTags: {
+        business_name: "TargetBay Inc",
+        current_user_name: "Elon Musk"
+      },
+      customJS: "http://cdn.muicss.com/mui-0.9.28/js/mui.min.js"
     })
+
+
+    // unlayer.addEventListener('design:updated', function(data) {
+    //   // Design is updated by the user
+    //   var type = data.type; // body, row, content
+    //   var item = data.item;
+    //   var changes = data.changes;
+    //   console.log('data', data);
+    //   console.log('design:updated', type, item, changes, data);
+    // })
 
     // All properties starting with on[Name] are registered as event listeners.
     for (const [key, value] of Object.entries(this.props)) {

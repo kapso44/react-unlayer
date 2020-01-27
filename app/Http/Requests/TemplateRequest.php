@@ -25,7 +25,7 @@ class TemplateRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
-            'content' => 'required',
+            'description' => 'required|min:3',
         ];
     }
 }

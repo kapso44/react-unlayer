@@ -118,6 +118,29 @@ class TemplateController extends Controller
     }
 
     /**
+     * Update the specified template in storage.
+     *
+     * @param TemplateRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateTemplate(Request $request, $id)
+    {
+        $jsonTemplate = $request->get('template');
+        $html = $request->get('content');
+
+        $template = Templates::updateOrCreate(
+            ['id' => $id],
+            [
+                'template' => json_encode($jsonTemplate),
+                'content' => $html
+            ]
+        );
+
+        return response()->json($template, 200);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param int $id

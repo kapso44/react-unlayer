@@ -22,7 +22,7 @@ class ArticleController extends Controller
         // if ($request->user()->is_admin) {
         //     return Article::loadAll();
         // }
-        return Article::loadAllMine(52);
+        return Article::loadAll();
     }
 
     /**

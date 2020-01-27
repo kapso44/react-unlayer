@@ -2,16 +2,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import { templateAddRequest } from '../service'
+import { templateEditRequest, templateUpdateRequest } from '../service'
 import ReeValidate from 'ree-validate'
 
 // import components
 import Form from './components/Form'
 
 class Page extends Component {
-  static displayName = 'AddTemplate'
+  static displayName = 'EditTemplate'
   static propTypes = {
-    template: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    template: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
   }
   
@@ -20,7 +21,7 @@ class Page extends Component {
     
     this.validator = new ReeValidate({
       name: 'required|min:3',
-      description: 'required|min:10',
+      description: 'required|min:10'
     })
     
     const template = this.props.template.toJson()
@@ -33,8 +34,12 @@ class Page extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
-  
-  componentWillReceiveProps(nextProps) {
+
+  UNSAFE_componentWillMount() {
+    this.loadTemplate
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const template = nextProps.template.toJson()
     
     if (!_.isEqual(this.state.template, template)) {
@@ -43,13 +48,21 @@ class Page extends Component {
     
   }
   
+  loadTemplate() {
+    const { match, template, dispatch } = this.props
+    
+    if (!template.id) {
+      dispatch(templateEditRequest(match.params.id))
+    }
+  }
+  
   handleChange(name, value) {
     const { errors } = this.validator
-  
+    
     this.setState({ template: { ...this.state.template, [name]: value} })
-  
+    
     errors.remove(name)
-  
+    
     this.validator.validate(name, value)
       .then(() => {
         this.setState({ errors })
@@ -64,35 +77,43 @@ class Page extends Component {
     this.validator.validateAll(template)
       .then((success) => {
         if (success) {
-          this.submit(template)
+          this.submitData(template)
         } else {
           this.setState({ errors })
         }
       })
   }
   
-  submit(template) {
-    this.props.dispatch(templateAddRequest(template))
+  submitData(template) {
+    
+    this.props.dispatch(templateUpdateRequest(template))
       .catch(({ error, statusCode }) => {
         const { errors } = this.validator
-  
+        
         if (statusCode === 422) {
           _.forOwn(error, (message, field) => {
             errors.add(field, message);
           });
         }
-  
+        
         this.setState({ errors })
       })
   }
   
+  renderForm() {
+    const { template } = this.props
+    if (template.id) {
+      return <Form {...this.state}
+                onChange={this.handleChange}
+                onSubmit={this.handleSubmit} />
+    }
+  }
+  
   render() {
-    return <div className="col-sm-9 ml-sm-auto col-md-10 pt-3">
+    return <main className="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
       <h1>Edit</h1>
-      <Form {...this.state}
-            onChange={this.handleChange}
-            onSubmit={this.handleSubmit} />
-    </div>
+      { this.renderForm() }
+    </main>
   }
 }
 

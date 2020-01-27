@@ -1,8 +1,10 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 import styled, { createGlobalStyle } from 'styled-components'
 
-import Example from '../src'
+// import components
+import Header from "../../web/pages/home/components/Header"
+import Example from '../../src'
 import sample from './sample.json'
 
 const GlobalStyle = createGlobalStyle`
@@ -31,12 +33,16 @@ const Bar = styled.div`
   color: #000;
   padding: 10px;
   display: flex;
-  max-height: 40px;
+  max-height: 60px;
 
   h1 {
     flex: 1;
-    font-size: 16px;
+    font-size: 2rem;
     text-align: left;
+    font-weight: 500;
+    line-height: 1.2;
+    color: white;
+    margin-bottom: 0.5rem
   }
 
   button {
@@ -53,15 +59,19 @@ const Bar = styled.div`
   }
 `
 
-class Demo extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <GlobalStyle />
+class Page extends Component {
+  static displayName = "Template Editor"
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  }
 
-        <Container>
+  render() {
+    return <div>
+      <Header/>
+      <GlobalStyle />
+      <Container>
           <Bar>
-            <h1>React Email Editor (Demo)</h1>
+            <h1>Email Template Editor</h1>
 
             <button onClick={this.saveDesign}>Save Design</button>
             <button onClick={this.exportHtml}>Export HTML</button>
@@ -72,11 +82,16 @@ class Demo extends Component {
             onLoad={this.onLoad}
             onDesignLoad={this.onDesignLoad}
           />
-        </Container>
-      </React.Fragment>
-    )
-  }
 
+        {/* <EmailEditor
+          ref={designer => this.designer = designer}
+          onLoad={this.onLoad}
+          onDesignLoad={this.onDesignLoad}
+        /> */}
+
+      </Container>
+    </div>
+  }
   onLoad = () => {
     // this.editor.addEventListener('onDesignLoad', this.onDesignLoad)
     this.editor.loadDesign(sample)
@@ -102,6 +117,4 @@ class Demo extends Component {
   }
 }
 
-render(<Demo/>, document.querySelector('#demo'))
-
-export default Demo
+export default Page
