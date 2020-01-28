@@ -20,11 +20,13 @@ const PublicHeader = ({ showNavigation }) => (
     <ul className="navbar-nav mr-auto">
       <NavItem path="/">Home</NavItem>
       <NavItem path="/templates">Templates</NavItem>
+      <NavItem path="/templates1">Templates-1</NavItem>
+      <NavItem path="/templates2">Templates-2</NavItem>
     </ul>
-    <ul className="navbar-nav">
+    {/* <ul className="navbar-nav">
       <NavItem path="/login">Login</NavItem>
       <NavItem path="/register">Register</NavItem>
-    </ul>
+    </ul> */}
   </Collapse>)
 
 // bind properties
