@@ -64,6 +64,15 @@ export default class extends Component {
           }
         }
       },
+     tools: {
+   	 'custom#Product': {
+      	 data: {
+        	name: 'John Doe',
+        	age: '27',
+        	photo: 'http://via.placeholder.com/350x150'
+      	     }
+    	 }
+      },
       designTags: {
         business_name: "TargetBay Inc",
         current_user_name: "Elon Musk"
