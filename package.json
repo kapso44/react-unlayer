@@ -38,7 +38,7 @@
     "styled-components": "^4.2.0"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
